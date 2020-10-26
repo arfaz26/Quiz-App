@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/answer.dart';
-import 'package:quiz_app/question.dart';
+// import 'package:quiz_app/answer.dart';
+// import 'package:quiz_app/question.dart';
+import 'package:quiz_app/quiz.dart';
+import 'package:quiz_app/result.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,8 +12,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int _questonIndex = 0;
-  var _questions = [
+  int _questionIndex = 0;
+  static const _questions = [
     {
       'question': 'Which is your favourite color?',
       'answer': ['Red', 'Green', 'Blue', 'Yellow']
@@ -25,11 +27,12 @@ class _MyAppState extends State<MyApp> {
       'answer': ['Dog', 'Elephant', 'Tiger', 'lion']
     },
   ];
-
+  bool check = true;
   void _ansQuestion() {
     setState(() {
-      _questonIndex += 1;
+      _questionIndex += 1;
     });
+    // if (_questonIndex < _questions.length) {}
   }
 
   @override
@@ -40,16 +43,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("Quiz App"),
         ),
-        body: Column(
-          children: <Widget>[
-            Question(_questions[_questonIndex]['question']),
-            // ... (spread operation) for taking individual items from a nested list which is given out by a map function
-            ...(_questions[_questonIndex]['answer'] as List<String>)
-                .map((answer) {
-              return Answer(answer, _ansQuestion);
-            }).toList(),
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                questionIndex: _questionIndex,
+                ansQuestion: _ansQuestion,
+                questions: _questions)
+            : Result(),
       ),
     );
   }
