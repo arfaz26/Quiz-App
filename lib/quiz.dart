@@ -16,8 +16,9 @@ class Quiz extends StatelessWidget {
       children: <Widget>[
         Question(questions[questionIndex]['question']),
         // ... (spread operation) for taking individual items from a nested list which is given out by a map function
-        ...(questions[questionIndex]['answer'] as List<String>).map((answer) {
-          return Answer(answer, ansQuestion);
+        ...(questions[questionIndex]['answer'] as List<Map<String, Object>>)
+            .map((answer) {
+          return Answer(answer['text'], () => ansQuestion(answer['score']));
         }).toList(),
       ],
     );
